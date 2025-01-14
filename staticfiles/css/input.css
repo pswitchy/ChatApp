@@ -1,0 +1,41 @@
+// static/css/input.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom components */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 
+           transition-colors duration-200 font-medium focus:outline-none focus:ring-2 
+           focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none 
+           focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+
+  .chat-bubble {
+    @apply max-w-[70%] px-4 py-2 rounded-lg;
+  }
+
+  .chat-bubble-sent {
+    @apply bg-primary-600 text-white ml-auto;
+  }
+
+  .chat-bubble-received {
+    @apply bg-gray-200 text-gray-900;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

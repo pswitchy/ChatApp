@@ -1,0 +1,93 @@
+<!-- templates/chat/home.html -->
+{% extends 'chat/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16"> <!-- Added mt-16 for margin-top -->
+    <div class="bg-white shadow rounded-lg grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Left Menu -->
+        <div class="bg-gray-100 p-4 rounded-lg">
+            <button id="toggle-menu" class="mb-4 px-4 py-2 bg-indigo-600 text-white rounded-md">Toggle Menu</button>
+            <div id="left-menu" class="space-y-4">
+                <h2 class="text-lg font-semibold mb-4">Registered Users</h2>
+                {% for user in users %}
+                <a href="{% url 'chat:chat_room' user.id %}" 
+                   class="flex items-center p-3 hover:bg-gray-50 rounded-lg transition">
+                    <img class="h-10 w-10 rounded-full object-cover" 
+                         src="{{ user.userprofile.profile_picture|default:'https://ui-avatars.com/api/?name='|add:user.username }}" 
+                         alt="{{ user.username }}">
+                    <div class="ml-3">
+                        <p class="text-sm font-medium text-gray-900">{{ user.username }}</p>
+                        <p class="text-xs text-gray-500">
+                            {% if user.userprofile.is_online %}
+                                <span class="text-green-500">●</span> Online
+                            {% else %}
+                                Offline
+                            {% endif %}
+                        </p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Main Content Area -->
+        <div class="col-span-2 bg-white p-4 rounded-lg cursor-pointer" onclick="window.location.href='{% url 'chat:chat_room' request.user.id %}'">
+            <h2 class="text-lg font-semibold mb-4">Current Chat</h2>
+            <div id="current-chat" class="space-y-4">
+                {% for message in current_chat %}
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600">{{ message.sender.username }}:</p>
+                    <p class="text-lg">{{ message.message }}</p>
+                    {% if message.attachment %}
+                        {% if message.attachment.url|endswith:".jpg" or message.attachment.url|endswith:".jpeg" or message.attachment.url|endswith:".png" %}
+                            <img src="{{ message.attachment.url }}" alt="Image" class="max-w-xs rounded-lg">
+                        {% elif message.attachment.url|endswith:".mp4" %}
+                            <video controls class="max-w-xs rounded-lg">
+                                <source src="{{ message.attachment.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% else %}
+                            <a href="{{ message.attachment.url }}" target="_blank" class="text-blue-500 underline">Download File</a>
+                        {% endif %}
+                    {% endif %}
+                    <p class="text-xs text-gray-400">{{ message.timestamp }}</p>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-500">No messages to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Right Side Panel -->
+        <div class="bg-gray-100 p-4 rounded-lg">
+            <h2 class="text-lg font-semibold mb-4">Notifications</h2>
+            <div id="notifications" class="space-y-4">
+                {% for notification in notifications %}
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600">{{ notification.sender.username }} messaged you.</p>
+                    <p class="text-xs text-gray-400">{{ notification.timestamp }}</p>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-500">No notifications to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center">&copy; 2025 ChatApp. All rights reserved to Parth.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleMenuButton = document.getElementById('toggle-menu');
+    const leftMenu = document.getElementById('left-menu');
+
+    toggleMenuButton.addEventListener('click', function() {
+        leftMenu.classList.toggle('hidden');
+    });
+});
+</script>
+{% endblock %}

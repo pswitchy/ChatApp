@@ -1,0 +1,163 @@
+<!-- templates/chat/room.html -->
+{% extends 'chat/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16"> <!-- Added mt-16 for margin-top -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="p-4">
+            <h2 class="text-lg font-semibold mb-4">Chat with {{ other_user.username }}</h2>
+            <div id="messages-container" class="overflow-y-auto h-96 border border-gray-200 p-4 rounded-lg">
+                {% for message in messages %}
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600">{{ message.sender.username }}:</p>
+                    <p class="text-lg">{{ message.message }}</p>
+                    {% if message.attachment %}
+                        {% if message.attachment.url|endswith:".jpg" or message.attachment.url|endswith:".jpeg" or message.attachment.url|endswith:".png" %}
+                            <img src="{{ message.attachment.url }}" alt="Image" class="max-w-xs rounded-lg cursor-pointer" onclick="openModal('{{ message.attachment.url }}')">
+                        {% elif message.attachment.url|endswith:".mp4" %}
+                            <video controls class="max-w-xs rounded-lg cursor-pointer" onclick="openModal('{{ message.attachment.url }}')">
+                                <source src="{{ message.attachment.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% else %}
+                            <a href="{{ message.attachment.url }}" target="_blank" class="text-blue-500 underline">Download File</a>
+                        {% endif %}
+                    {% endif %}
+                    <p class="text-xs text-gray-400">{{ message.timestamp }}</p>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-500">No messages to display.</p>
+                {% endfor %}
+            </div>
+            <form id="message-form" class="mt-4">
+                {% csrf_token %}
+                <div class="flex items-center">
+                    <input id="message-input" name="message" type="text"
+                           class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                           placeholder="Type your message">
+                    <input id="attachment-input" name="attachment" type="file" class="hidden">
+                    <button type="button" id="attachment-button"
+                            class="ml-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        Attach
+                    </button>
+                    <button type="submit"
+                            class="ml-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="media-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg overflow-hidden shadow-xl max-w-lg w-full">
+        <div class="p-4">
+            <span id="close-modal" class="text-gray-500 cursor-pointer float-right">&times;</span>
+            <div id="modal-content" class="flex justify-center items-center"></div>
+            <div class="mt-4 text-center">
+                <a id="download-link" href="#" download class="text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const messageForm = document.getElementById('message-form');
+    const messageInput = document.getElementById('message-input');
+    const attachmentInput = document.getElementById('attachment-input');
+    const attachmentButton = document.getElementById('attachment-button');
+    const messagesContainer = document.getElementById('messages-container');
+    const modal = document.getElementById('media-modal');
+    const modalContent = document.getElementById('modal-content');
+    const downloadLink = document.getElementById('download-link');
+    const closeModal = document.getElementById('close-modal');
+
+    attachmentButton.addEventListener('click', function() {
+        attachmentInput.click();
+    });
+
+    messageForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(messageForm);
+        if (!messageInput.value && !attachmentInput.files.length) {
+            alert('Please enter a message or attach a file.');
+            return;
+        }
+
+        fetch("{% url 'chat:send_message' other_user.id %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                appendMessage(data.data);
+                messageInput.value = '';
+                attachmentInput.value = '';
+            } else {
+                alert(data.message);
+            }
+        });
+    });
+
+    function appendMessage(data) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('mb-4');
+        messageElement.innerHTML = `
+            <p class="text-sm text-gray-600">${data.sender}:</p>
+            <p class="text-lg">${data.message}</p>
+            ${data.attachment ? getAttachmentHTML(data.attachment) : ''}
+            <p class="text-xs text-gray-400">${data.timestamp}</p>
+        `;
+        messagesContainer.appendChild(messageElement);
+        scrollToBottom();
+    }
+
+    function getAttachmentHTML(url) {
+        if (url.endsWith(".jpg") || url.endsWith(".jpeg") || url.endsWith(".png")) {
+            return `<img src="${url}" alt="Image" class="max-w-xs rounded-lg cursor-pointer" onclick="openModal('${url}')">`;
+        } else if (url.endswith(".mp4")) {
+            return `<video controls class="max-w-xs rounded-lg cursor-pointer" onclick="openModal('${url}')"><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+        } else {
+            return `<a href="${url}" target="_blank" class="text-blue-500 underline">Download File</a>`;
+        }
+    }
+
+    function scrollToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Scroll to bottom on page load
+    scrollToBottom();
+
+    window.openModal = function(url) {
+        modalContent.innerHTML = '';
+        if (url.endsWith(".jpg") || url.endsWith(".jpeg") || url.endsWith(".png")) {
+            modalContent.innerHTML = `<img src="${url}" alt="Image" class="max-w-full rounded-lg">`;
+        } else if (url.endsWith(".mp4")) {
+            modalContent.innerHTML = `<video controls class="max-w-full rounded-lg"><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+        }
+        downloadLink.href = url;
+        modal.classList.remove('hidden');
+    }
+
+    closeModal.addEventListener('click', function() {
+        modal.classList.add('hidden');
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.classList.add('hidden');
+        }
+    });
+});
+</script>
+{% endblock %}

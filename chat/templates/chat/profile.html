@@ -1,0 +1,104 @@
+<!-- templates/chat/profile.html -->
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        {% if user.userprofile.profile_picture %}
+            <img src="{{ user.userprofile.profile_picture }}" alt="Profile Picture" class="profile-picture">
+        {% endif %}
+        <h2>{{ user.get_full_name }}</h2>
+        <p>{{ user.email }}</p>
+    </div>
+    
+    <div class="profile-details">
+        <h3>Chats</h3>
+        <ul class="chat-list">
+            {% for chat in chats %}
+            <li class="chat-item">
+                <img src="{{ chat.other_user.userprofile.profile_picture }}" alt="{{ chat.other_user.username }}" class="chat-profile-picture">
+                <div class="chat-info">
+                    <p class="chat-username">{{ chat.other_user.username }}</p>
+                    <p class="chat-time-period">{{ chat.start_time }} - {{ chat.end_time }}</p>
+                </div>
+            </li>
+            {% empty %}
+            <p>No chats to display.</p>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+</div>
+
+<style>
+.profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-top: 80px; /* Add margin-top to avoid clash with navbar */
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-details {
+    margin-top: 20px;
+}
+
+.chat-list {
+    list-style: none;
+    padding: 0;
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chat-profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.chat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-username {
+    font-weight: bold;
+}
+
+.chat-time-period {
+    font-size: 0.9em;
+    color: gray;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 20px;
+}
+</style>
+{% endblock %}

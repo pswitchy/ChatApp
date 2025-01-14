@@ -1,0 +1,51 @@
+<!-- templates/chat/login.html -->
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900">Welcome to ChatApp</h2>
+            <p class="mt-2 text-gray-600">Sign in to start chatting</p>
+        </div>
+
+        <div class="space-y-4">
+            <a href="{% url 'social:begin' 'google-oauth2' %}"
+               class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <img src="https://developers.google.com/identity/images/g-logo.png" 
+                     alt="Google Logo" 
+                     class="h-5 w-5 mr-2">
+                Sign in with Google
+            </a>
+        </div>
+
+        <form method="post" class="mt-8 space-y-6">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="sr-only">Username</label>
+                <input id="username" name="username" type="text" autocomplete="username" required
+                       class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Username">
+            </div>
+            <div>
+                <label for="password" class="sr-only">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required
+                       class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Password">
+            </div>
+            <div>
+                <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Don't have an account? <a href="{% url 'chat:signup' %}" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
