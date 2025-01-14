@@ -33,8 +33,7 @@ A feature-rich real-time chat application built with Django, Channels, and moder
 - Channels 4.0.0
 - Django Channels
 - Social Auth App Django
-- Redis (for production)
-
+  
 ### Frontend
 - TailwindCSS
 - AlpineJS
@@ -62,10 +61,6 @@ cd <project-directory>
 # Windows
 python -m venv venv
 venv\Scripts\activate
-
-# macOS/Linux
-python -m venv venv
-source venv/bin/activate
 ```
 
 3. Install Python dependencies:
@@ -97,18 +92,6 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-## Google OAuth2 Setup
-
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the Google+ API
-4. Go to the Credentials page
-5. Create OAuth 2.0 Client ID credentials
-6. Add authorized redirect URIs:
-   - Development: `http://localhost:8000/social-auth/complete/google-oauth2/`
-   - Production: `https://yourdomain.com/social-auth/complete/google-oauth2/`
-7. Copy the Client ID and Client Secret to your `.env` file
-
 ## Running the Project
 
 1. Start the development server:
@@ -122,8 +105,8 @@ npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
 ```
 
 3. Access the application:
-- Main application: `http://localhost:8000`
-- Admin interface: `http://localhost:8000/admin`
+- Main application: `http://127.0.0.1:8000`
+- Admin interface: `http://127.0.0.1:8000/admin`
 
 ## Development
 
@@ -161,15 +144,6 @@ chat_project/
 ├── manage.py
 └── requirements.txt
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 
 ## Acknowledgments
 
