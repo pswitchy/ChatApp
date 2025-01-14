@@ -45,7 +45,7 @@ A feature-rich real-time chat application built with Django, Channels, and moder
 ## Prerequisites
 
 - Python 3.8+
-- Node.js 14+
+- JavaScript
 - Google OAuth2 credentials
 
 ## Installation
@@ -68,26 +68,13 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Install Node.js dependencies:
-```bash
-npm install
-```
-
-5. Create `.env` file in the project root:
-```env
-SECRET_KEY=your-django-secret-key
-DEBUG=True
-GOOGLE_OAUTH2_KEY=your-google-oauth2-client-id
-GOOGLE_OAUTH2_SECRET=your-google-oauth2-client-secret
-```
-
-6. Apply database migrations:
+4. Apply database migrations:
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-7. Create superuser (admin):
+5. Create superuser (admin):
 ```bash
 python manage.py createsuperuser
 ```
