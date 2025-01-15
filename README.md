@@ -93,18 +93,27 @@ npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
 
 3. Access the application:
 - Main application: `http://127.0.0.1:8000`
-- Admin interface: `http://127.0.0.1:8000/admin`
+
+## Working of Application
 
 ![Screenshot 2025-01-14 162904](https://github.com/user-attachments/assets/e35c3ad0-d0a8-4fce-b4e2-5ed676bda45f)
 
 
 ![Screenshot 2025-01-14 162921](https://github.com/user-attachments/assets/453e81b4-03a4-4f41-b8ca-af37454fc045)
 
+
+
 ![Screenshot 2025-01-14 162605](https://github.com/user-attachments/assets/18bfa253-3d55-4598-81fa-eb9436a0df6b)
+
 
 
 ![Screenshot 2025-01-14 162632](https://github.com/user-attachments/assets/e31e4c14-5a37-4541-a3da-c7b43819d842)
 
+
+  
 ![Screenshot 2025-01-14 163055](https://github.com/user-attachments/assets/2af4501b-f118-4948-8be3-7f8a4565572d)
+
+
+
 
 ![Screenshot 2025-01-14 163118](https://github.com/user-attachments/assets/c0bf022c-26c3-409b-96f0-975a7f821ffc)
