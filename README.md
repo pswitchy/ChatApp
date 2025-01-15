@@ -115,5 +115,3 @@ npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
 
 
 
-
-![Screenshot 2025-01-14 163118](https://github.com/user-attachments/assets/c0bf022c-26c3-409b-96f0-975a7f821ffc)
