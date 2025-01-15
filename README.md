@@ -95,46 +95,16 @@ npx tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
 - Main application: `http://127.0.0.1:8000`
 - Admin interface: `http://127.0.0.1:8000/admin`
 
-## Development
+![Screenshot 2025-01-14 162904](https://github.com/user-attachments/assets/e35c3ad0-d0a8-4fce-b4e2-5ed676bda45f)
 
-### Project Structure
-```
-chat_project/
-├── chat/
-│   ├── migrations/
-│   ├── static/
-│   ├── templates/
-│   │   └── chat/
-│   │       ├── login.html
-│   │       ├── profile.html
-│   │       ├── home.html
-│   │       └── room.html
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── consumers.py
-│   ├── models.py
-│   ├── routing.py
-│   ├── urls.py
-│   └── views.py
-├── chat_project/
-│   ├── __init__.py
-│   ├── asgi.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── static/
-├── templates/
-│   └── base.html
-├── .env
-├── .gitignore
-├── manage.py
-└── requirements.txt
-```
 
-## Acknowledgments
+![Screenshot 2025-01-14 162921](https://github.com/user-attachments/assets/453e81b4-03a4-4f41-b8ca-af37454fc045)
 
-- Django documentation
-- Channels documentation
-- TailwindCSS documentation
-- Google OAuth2 documentation
+![Screenshot 2025-01-14 162605](https://github.com/user-attachments/assets/18bfa253-3d55-4598-81fa-eb9436a0df6b)
+
+
+![Screenshot 2025-01-14 162632](https://github.com/user-attachments/assets/e31e4c14-5a37-4541-a3da-c7b43819d842)
+
+![Screenshot 2025-01-14 163055](https://github.com/user-attachments/assets/2af4501b-f118-4948-8be3-7f8a4565572d)
+
+![Screenshot 2025-01-14 163118](https://github.com/user-attachments/assets/c0bf022c-26c3-409b-96f0-975a7f821ffc)
