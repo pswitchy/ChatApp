@@ -1,6 +1,8 @@
 # Real-Time Chat Application
 
 A feature-rich real-time chat application built with Django, Channels, and modern frontend technologies. The application supports Google Authentication, real-time messaging, file sharing, and user status tracking.
+### Deployed Link 
+https://hearingaid.pythonanywhere.com/
 
 ## Features
 
